@@ -4,7 +4,8 @@ export var player_speed = 100
 
 var motion := Vector2()
 
-func _physics_process(delta):
+func _physics_process(delta):	
+	
 	if Input.is_action_pressed("move_right"):
 		motion.x = player_speed
 	elif Input.is_action_pressed("move_left"):

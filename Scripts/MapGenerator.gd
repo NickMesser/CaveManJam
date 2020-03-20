@@ -3,14 +3,15 @@ extends Node2D
 
 export var mapSize := Vector2()
 
-var tileSet
-
 onready var rock = preload("res://Scenes/Rock.tscn")
 
+var rocks = Array()
+
 func _ready():
-	tileSet = $TileMap.tile_set
+	randomize()
 	generate_map()
 	generate_rocks()
+	generate_hole()
 	
 func generate_map():
 	var x = 0
@@ -25,8 +26,15 @@ func generate_rocks():
 		for y in mapSize.y:
 			var randomNumber = randf()
 			if randomNumber > .9:
-				print("New rock")
 				var newRock = rock.instance()
 				add_child(newRock)
 				var currentTile = $TileMap.map_to_world(Vector2(x, y), false)
+				currentTile.x += 16
+				currentTile.y += 16
+				rocks.append(currentTile)
 				newRock.position = currentTile
+	
+func generate_hole():
+	var random_rock = rand_range(0, rocks.size())
+	print("Hole is located at : " + str(rocks[random_rock]))
+	pass
