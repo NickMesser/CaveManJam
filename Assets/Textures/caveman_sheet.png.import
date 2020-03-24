@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Selection.png-3e765b9c16fbda24d7f91fa6c5b4ace1.stex"
+path="res://.import/caveman_sheet.png-5708f2d8cf4f203f583721163b9052a0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Selection.png"
-dest_files=[ "res://.import/Selection.png-3e765b9c16fbda24d7f91fa6c5b4ace1.stex" ]
+source_file="res://Assets/Textures/caveman_sheet.png"
+dest_files=[ "res://.import/caveman_sheet.png-5708f2d8cf4f203f583721163b9052a0.stex" ]
 
 [params]
 
