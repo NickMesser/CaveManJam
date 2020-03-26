@@ -2,6 +2,10 @@ extends Area2D
 
 var player
 
+func _process(delta):
+	if !player:
+		player = get_tree().get_root().find_node("Player", true, false)
+
 func _ready():
 	set_process_input(true)
 	player = get_tree().get_root().find_node("Player", true, false)
