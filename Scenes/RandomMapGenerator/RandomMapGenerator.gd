@@ -1,57 +1,36 @@
 extends Node2D
 
+onready var Map = $TileMap
 
 var Room = preload("res://Scenes/RandomMapGenerator/Room.tscn")
 var Player = preload("res://Scenes/Player/Player.tscn")
-
 var Rock = preload("res://Scenes/Rock.tscn")
 
 var tile_size = 32
 export var num_rooms = 30
-var min_size = 6
-var max_size = 10
-var h_spread = 300
+var min_size = 5
+var max_size = 8
+var h_spread = 0
 
-onready var Map = $TileMap
+var spawned_rocks = []
 
 var path
 
-var debug_mode = false
+export var debug_mode = false
 
 var player = null
 var start_room = null
 var end_room = null
 
+signal room_loaded
+
 func _ready():
 	randomize()
 	make_rooms()
 	
-func make_rooms():
-	for i in range(num_rooms):
-		var pos = Vector2(rand_range(-h_spread, h_spread), 0)
-		var r = Room.instance()
-		var w = min_size + randi() % (max_size - min_size)
-		var h = min_size + randi() % (max_size - min_size)
-		r.make_room(pos, Vector2(w, h) * tile_size)
-		$Rooms.add_child(r)
-		
-	#yield(get_tree().create_timer(1), 'timeout')
-	
-	var room_positions = []
-	for room in $Rooms.get_children():
-		if randf() < .5:
-			room.queue_free()
-		else:
-			room.mode = RigidBody2D.MODE_STATIC
-			room_positions.append(Vector2(room.position.x, room.position.y))
-	
-	yield(get_tree(), "idle_frame")
-	path = find_mst(room_positions)
-	make_map()
-	
 func _process(delta):
 	update()
-	
+
 func _draw():
 	if debug_mode:
 		for room in $Rooms.get_children():
@@ -65,17 +44,41 @@ func _draw():
 					draw_line(pp, cp, Color(1, 1, 0), 15, true)
 	
 func _input(event):
-	if event.is_action_pressed("ui_select"):
-		for room in $Rooms.get_children():
-			room.queue_free()
-		make_rooms()
-		path = null
-		Map.clear()
+	if debug_mode:
+		if event.is_action_pressed("ui_select"):
+			for room in $Rooms.get_children():
+				room.queue_free()
+			make_rooms()
+			path = null
+			Map.clear()
 		
-	if event.is_action_pressed("ui_focus_next"):
-		player = Player.instance()
-		add_child(player)
-		player.position = start_room.position
+		if event.is_action_pressed("ui_focus_next"):
+			player = Player.instance()
+			add_child(player)
+			player.position = start_room.position
+	
+func make_rooms():
+	for i in range(num_rooms):
+		var pos = Vector2(rand_range(-h_spread, h_spread), 0)
+		var r = Room.instance()
+		var w = min_size + randi() % (max_size - min_size)
+		var h = min_size + randi() % (max_size - min_size)
+		r.make_room(pos, Vector2(w, h) * tile_size)
+		$Rooms.add_child(r)
+		
+	yield(get_tree().create_timer(1), 'timeout')
+	
+	var room_positions = []
+	for room in $Rooms.get_children():
+		if randf() < .3:
+			room.queue_free()
+		else:
+			room.mode = RigidBody2D.MODE_STATIC
+			room_positions.append(Vector2(room.position.x, room.position.y))
+	
+	yield(get_tree(), "idle_frame")
+	path = find_mst(room_positions)
+	make_map()
 		
 func find_mst(nodes):
 	var path = AStar2D.new()
@@ -126,14 +129,13 @@ func make_map():
 		for x in range(2, s.x * 2 - 1):
 			for y in range(2, s.y * 2 - 1):
 				Map.set_cell(ul.x + x, ul.y + y, 1)
+				#Spawn rocks
 				var rand = randf()
-				if rand > .9:
-					var rock = Rock.instance()
-					add_child(rock)
-					var current_tile = Map.map_to_world(Vector2(ul.x + x, ul.y + y))
-					current_tile.x += 16
-					current_tile.y += 16
-					rock.position = current_tile
+				if room.position != start_room.position:
+					if rand > .9:
+						var x_pos = ul.x + x
+						var y_pos = ul.y + y
+						spawn_rock(x_pos, y_pos)
 		
 		var p = path.get_closest_point(room.position)
 		
@@ -141,10 +143,10 @@ func make_map():
 			if not connection in hallways:
 				var start = Map.world_to_map(path.get_point_position(p))
 				var end = Map.world_to_map(path.get_point_position(connection))
-				
-				carve_path(start, end)
-				
+				carve_path(start, end)	
 		hallways.append(p)
+	spawn_player()
+	spawn_hole()
 	
 func carve_path(pos1, pos2):
 	var x_diff = sign(pos2.x - pos1.x)
@@ -168,3 +170,22 @@ func find_start_room():
 		if room.position.x < min_x:
 			start_room = room
 			min_x = room.position.x
+
+func spawn_player():
+		player = Player.instance()
+		add_child(player)
+		player.position = start_room.position
+
+func spawn_hole():
+	var random_number = rand_range(0, spawned_rocks.size() + 1)
+	var new_hole = null
+	print(spawned_rocks[random_number].position)
+
+func spawn_rock(x_pos, y_pos):
+	var rock = Rock.instance()
+	add_child(rock)
+	var current_tile = Map.map_to_world(Vector2(x_pos, y_pos))
+	current_tile.x += 16
+	current_tile.y += 16
+	rock.position = current_tile
+	spawned_rocks.append(rock)
