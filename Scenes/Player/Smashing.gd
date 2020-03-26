@@ -7,4 +7,3 @@ func update(delta):
 	if not host.anim_playing():
 		change_state("moving")
 		return
-	host.process_move_and_collide(delta)
