@@ -5,6 +5,9 @@ var flipped = false
 
 var motion := Vector2()
 
+func _ready():
+	Globals.set("player", self)
+
 # Movement
 func process_movement(delta):
 	var target_speed = Vector2()
@@ -25,6 +28,15 @@ func process_movement(delta):
 func process_move_and_collide(delta):
 	var collision_data = move_and_collide(motion)
 	return collision_data
+
+# Sound and Animation
+
+func play_walk_sound(playing : bool):
+	if playing:
+		if not $Footsteps.is_playing():
+			$Footsteps.play()
+	else:
+		$Footsteps.stop()
 
 func play_anim(action):
 	if $anim.get_current_animation() != action:
