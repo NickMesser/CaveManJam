@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Cave Man Jam"
-run/main_scene="res://Level1.tscn"
+run/main_scene="res://Scenes/Title/Title.tscn"
 config/icon="res://Assets/Textures/icon.png"
 
 [autoload]
