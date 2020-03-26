@@ -19,6 +19,12 @@ config/name="Cave Man Jam"
 run/main_scene="res://Level1.tscn"
 config/icon="res://Assets/Textures/icon.png"
 
+[autoload]
+
+Globals="*res://Autoloads/Globals.gd"
+SignalMgr="*res://Autoloads/SignalMgr.gd"
+TransitionMgr="*res://Autoloads/TransitionMgr/transitionMgr.tscn"
+
 [importer_defaults]
 
 texture={
