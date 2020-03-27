@@ -3,7 +3,8 @@ extends KinematicBody2D
 export var player_speed = 2
 var flipped = false
 
-var motion := Vector2()
+var motion = Vector2.ZERO
+var facing = "right"
 
 func _ready():
 	Globals.set("player", self)
@@ -41,6 +42,10 @@ func play_walk_sound(playing : bool):
 func play_anim(action):
 	if $anim.get_current_animation() != action:
 		$anim.play(action)
+
+func stop_anim(frame : int):
+	$anim.stop()
+	$Sprite.frame = frame
 
 func anim_playing():
 	return $anim.is_playing()
