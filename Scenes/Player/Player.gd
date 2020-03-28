@@ -10,6 +10,26 @@ func _ready():
 	Globals.set("player", self)
 
 # Movement
+
+func face_mouse():
+	var mouse_pos = get_local_mouse_position()
+	if mouse_pos == Vector2.ZERO:
+		facing = "down"
+		return
+	if abs(mouse_pos.x) > abs(mouse_pos.y):
+		if sign(mouse_pos.x) == 1:
+			facing = "right"
+			$Sprite.flip_h = false
+		else:
+			facing = "left"
+			$Sprite.flip_h = true
+	else:
+		$Sprite.flip_h = false
+		if sign(mouse_pos.y) == 1:
+			facing = "down"
+		else:
+			facing = "up"
+
 func process_movement(delta):
 	var target_speed = Vector2()
 	if Input.is_action_pressed("move_up"):
@@ -20,7 +40,7 @@ func process_movement(delta):
 		target_speed.x -= player_speed
 	if Input.is_action_pressed("move_right"):
 		target_speed.x += player_speed
-	motion = target_speed
+	motion = target_speed.normalized() * player_speed
 	if motion.x > 0:
 		$Sprite.flip_h = false
 	elif motion.x < 0:

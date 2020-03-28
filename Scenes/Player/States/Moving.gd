@@ -5,11 +5,22 @@ const IDLE_UP = 44
 const IDLE_SIDE = 18
 
 func update(delta):
-	if Input.is_action_just_pressed("smash"):
+	if Input.is_action_just_pressed("mouse_click"):
 		change_state("smashing")
 		return
+	# idle
+	if host.motion == Vector2.ZERO:
+		var frame = IDLE_DOWN
+		host.play_walk_sound(false)
+		if host.facing == "down":
+			frame = IDLE_DOWN
+		elif host.facing == "up":
+			frame = IDLE_UP
+		else:
+			frame = IDLE_SIDE
+		host.stop_anim(frame)
 	# side movement
-	if abs(host.motion.x) >= abs(host.motion.y):
+	elif abs(host.motion.x) >= abs(host.motion.y):
 		#side anim
 		if sign(host.motion.x) > 0:
 			#face right
@@ -27,15 +38,5 @@ func update(delta):
 			host.facing = "up"
 			host.play_anim("walk_up")
 		host.play_walk_sound(true)
-	if host.motion == Vector2.ZERO:
-		var frame = IDLE_DOWN
-		host.play_walk_sound(false)
-		if host.facing == "down":
-			frame = IDLE_DOWN
-		elif host.facing == "up":
-			frame = IDLE_UP
-		else:
-			frame = IDLE_SIDE
-		host.stop_anim(frame)
 	host.process_movement(delta)
 	host.process_move_and_collide(delta)

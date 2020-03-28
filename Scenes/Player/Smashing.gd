@@ -1,6 +1,7 @@
 extends "res://Scenes/StateMachine/baseState.gd"
 
 func enter():
+	host.face_mouse()
 	if host.facing == "down":
 		host.play_anim("smash_down")
 	elif host.facing == "up":
