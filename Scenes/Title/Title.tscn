@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scenes/Title/Title.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Textures/title_cave_sketch.png" type="Texture" id=2]
 
 [node name="Title" type="Control"]
 anchor_right = 1.0
@@ -11,14 +12,25 @@ __meta__ = {
 }
 next_scene = "res://Scenes/RandomMapGenerator/RandomMapGenerator.tscn"
 
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Start" type="Button" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -6.0
-margin_top = -10.0
-margin_right = 6.0
-margin_bottom = 10.0
+margin_left = -35.0
+margin_top = 111.0
+margin_right = 40.0
+margin_bottom = 163.0
 text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="Start" to="." method="_on_Start_button_up"]
