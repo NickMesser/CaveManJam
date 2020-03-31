@@ -14,4 +14,4 @@ func _input_event(viewport, event, shape_idx):
 		var distance = self.global_position.distance_to(player.global_position)
 		
 		if distance < 50:
-			get_parent().queue_free()
+			get_parent().smash()

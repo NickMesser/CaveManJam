@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Rock_Smash_2.wav-bf9f710a08e0064ef7f8d54cd4f4bd2f.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Smash/Rock_Smash_2.wav"
+dest_files=[ "res://.import/Rock_Smash_2.wav-bf9f710a08e0064ef7f8d54cd4f4bd2f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

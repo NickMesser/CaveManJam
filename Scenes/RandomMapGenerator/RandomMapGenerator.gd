@@ -4,7 +4,7 @@ onready var Map = $TileMap
 
 var Room = preload("res://Scenes/RandomMapGenerator/Room.tscn")
 var Player = preload("res://Scenes/Player/Player.tscn")
-var Rock = preload("res://Scenes/Rock.tscn")
+var Rock = preload("res://Scenes/Rock/Rock.tscn")
 
 var tile_size = 32
 export var num_rooms = 30
