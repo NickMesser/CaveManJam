@@ -11,6 +11,8 @@ func _input_event(viewport, event, shape_idx):
 	if event.is_action_pressed("mouse_click"):
 		if not player:
 			player = Globals.get("player")
+		if player.get_state() != "moving":
+			return
 		var distance = self.global_position.distance_to(player.global_position)
 		
 		if distance < 50:

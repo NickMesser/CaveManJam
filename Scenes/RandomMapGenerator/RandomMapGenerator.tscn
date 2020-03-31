@@ -17,4 +17,4 @@ cell_size = Vector2( 32, 32 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 format = 1
 
-[node name="Position2D" parent="." instance=ExtResource( 3 )]
+[node name="Cursor" parent="." instance=ExtResource( 3 )]

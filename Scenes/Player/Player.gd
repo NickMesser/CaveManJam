@@ -8,6 +8,9 @@ var facing = "right"
 
 func _ready():
 	Globals.set("player", self)
+	
+func get_state():
+	return $stateMachine.current_state.name
 
 # Movement
 
