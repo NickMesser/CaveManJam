@@ -8,7 +8,7 @@ func _ready():
 	player = Globals.get("player")
 	
 func _input_event(viewport, event, shape_idx):
-	if event.is_action("mouse_click"):
+	if event.is_action_pressed("mouse_click"):
 		if not player:
 			player = Globals.get("player")
 		var distance = self.global_position.distance_to(player.global_position)
