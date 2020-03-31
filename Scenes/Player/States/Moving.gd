@@ -13,12 +13,12 @@ func update(delta):
 		var frame = IDLE_DOWN
 		host.play_walk_sound(false)
 		if host.facing == "down":
-			frame = IDLE_DOWN
+			host.play_anim("idle_down")
 		elif host.facing == "up":
-			frame = IDLE_UP
+			host.play_anim("idle_up")
 		else:
-			frame = IDLE_SIDE
-		host.stop_anim(frame)
+			host.play_anim("idle_side")
+		#host.stop_anim(frame)
 	# side movement
 	elif abs(host.motion.x) >= abs(host.motion.y):
 		#side anim
