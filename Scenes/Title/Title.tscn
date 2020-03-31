@@ -10,7 +10,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-next_scene = "res://Scenes/RandomMapGenerator/RandomMapGenerator.tscn"
+next_scene = "res://Scenes/Levels/Level.tscn"
 
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 40.0

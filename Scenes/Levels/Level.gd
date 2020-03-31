@@ -11,3 +11,7 @@ func notify(pos : Vector2, text : String, color : Color = Color.white):
 	notification.notify(pos, text)
 	notification.set_color(color)
 	add_child(notification)
+
+
+func _on_RandomMapGenerator_map_done():
+	$LoadingMap.hide()

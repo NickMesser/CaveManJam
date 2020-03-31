@@ -1,5 +1,7 @@
 extends Node2D
 
+signal map_done()
+
 onready var Map = $TileMap
 
 var Room = preload("res://Scenes/RandomMapGenerator/Room.tscn")
@@ -101,7 +103,7 @@ func find_mst(nodes):
 		path.add_point(n, min_position)
 		path.connect_points(path.get_closest_point(current_position), n)
 		nodes.erase(min_position)
-	
+	emit_signal("map_done")
 	return path
 	
 func make_map():
