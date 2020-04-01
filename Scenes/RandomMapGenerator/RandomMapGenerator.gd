@@ -182,7 +182,7 @@ func spawn_player():
 		player.position = start_room.position
 
 func spawn_hole():
-	var random_number = rand_range(0, spawned_rocks.size() + 1)
+	var random_number = rand_range(0, spawned_rocks.size())
 	var new_hole = Hole.instance()
 	add_child(new_hole)
 	new_hole.position = spawned_rocks[random_number].position

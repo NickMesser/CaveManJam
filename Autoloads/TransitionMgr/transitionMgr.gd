@@ -17,6 +17,7 @@ func setForAnimDb(value):
 
 
 func transitionTo(scene, speed = 1, includeSound = false):
+	Globals.set("player", null)
 	scenePath = scene
 	animationSpeed = defaultAnimationSpeed * speed
 	doVolumeAnim = includeSound
