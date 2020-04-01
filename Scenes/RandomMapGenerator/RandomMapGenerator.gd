@@ -177,19 +177,21 @@ func find_start_room():
 			min_x = room.position.x
 
 func spawn_player():
+	if !player:
 		player = Player.instance()
 		add_child(player)
-		player.position = start_room.position
+		
+	player.position = start_room.position
 
 func spawn_hole():
-	var random_number = rand_range(0, spawned_rocks.size() + 1)
+	var random_number = rand_range(0, spawned_rocks.size())
 	var new_hole = Hole.instance()
 	add_child(new_hole)
 	new_hole.position = spawned_rocks[random_number].position
 
 func spawn_rock(x_pos, y_pos):
 	var rock = Rock.instance()
-	add_child(rock)
+	$Rocks.add_child(rock)
 	var current_tile = Map.map_to_world(Vector2(x_pos, y_pos))
 	current_tile.x += 16
 	current_tile.y += 16
@@ -201,3 +203,17 @@ func spawn_foliage(x_pos, y_pos):
 	var rand = rand_range(0, foliage_numbers.size())
 	FoliageMap.set_cell(x_pos, y_pos, foliage_numbers[rand])
 	
+func clear_map():
+	$Foliage.clear()
+	$LevelTiles.clear()
+	spawned_rocks.clear()
+	for rock in $Rocks.get_children():
+		rock.queue_free()
+		
+	path = null
+	$Hole.queue_free()
+	
+	for room in $Rooms.get_children():
+		room.queue_free()
+	
+	make_rooms()

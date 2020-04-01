@@ -2,9 +2,12 @@ extends Node2D
 
 var notification_scene = preload("res://Scenes/Notification/Notification.tscn")
 
+export(String, FILE, "*.tscn") var next_scene
+
 func _ready():
 	SignalMgr.register_subscriber(self, "notify", "notify")
 	Globals.set("current_scene", self)
+	
 	
 func notify(pos : Vector2, text : String, color : Color = Color.white):
 	var notification = notification_scene.instance()
@@ -15,3 +18,7 @@ func notify(pos : Vector2, text : String, color : Color = Color.white):
 
 func _on_RandomMapGenerator_map_done():
 	$LoadingMap.hide()
+	
+func next_level():
+	$LoadingMap.show()
+	$RandomMapGenerator.clear_map()
