@@ -2,6 +2,8 @@ extends Node2D
 
 signal map_done()
 
+const CAVE_TILE = 47
+
 onready var Map = $LevelTiles
 onready var FoliageMap = $Foliage
 
@@ -26,12 +28,10 @@ var player = null
 var start_room = null
 var end_room = null
 
-signal room_loaded
-
 func _ready():
 	randomize()
 	make_rooms()
-	
+
 func _process(delta):
 	update()
 
@@ -105,24 +105,12 @@ func find_mst(nodes):
 		path.add_point(n, min_position)
 		path.connect_points(path.get_closest_point(current_position), n)
 		nodes.erase(min_position)
-	emit_signal("map_done")
+	
 	return path
 	
 func make_map():
 	Map.clear()
 	find_start_room()
-	
-	var full_rect = Rect2()
-	for room in $Rooms.get_children():
-		var r = Rect2(room.position - room.size, room.get_node("CollisionShape2D").shape.extents*2)
-		full_rect = full_rect.merge(r)
-	var topleft = Map.world_to_map(full_rect.position)
-	var bottomright = Map.world_to_map(full_rect.end)
-	
-	#Set wall tiles
-	for x in range(topleft.x, bottomright.x):
-		for y in range(topleft.y, bottomright.y):
-			Map.set_cell(x, y, 2)
 		
 	var hallways = []
 	#Set room tiles. 
@@ -132,29 +120,34 @@ func make_map():
 		var ul = (room.position / tile_size).floor() - s
 		for x in range(2, s.x * 2 - 1):
 			for y in range(2, s.y * 2 - 1):
-				Map.set_cell(ul.x + x, ul.y + y, 1)
-				#Spawn rocks
+				Map.set_cell(ul.x + x, ul.y + y, CAVE_TILE)
+				Map.update_bitmask_area(Vector2(ul.x + x, ul.y + y))
 				var rand = randf()
 				if room.position != start_room.position:
+					#Spawn_Rocks
 					if rand > .9:
 						var x_pos = ul.x + x
 						var y_pos = ul.y + y
 						spawn_rock(x_pos, y_pos)
+					#Spawn_Foliage
 					elif rand > .7:
 						var x_pos = ul.x + x
 						var y_pos = ul.y + y
 						spawn_foliage(x_pos, y_pos)
 		
+		#Set Hallways
 		var p = path.get_closest_point(room.position)
-		
 		for connection in path.get_point_connections(p):
 			if not connection in hallways:
 				var start = Map.world_to_map(path.get_point_position(p))
 				var end = Map.world_to_map(path.get_point_position(connection))
 				carve_path(start, end)	
 		hallways.append(p)
+		
 	spawn_player()
 	spawn_hole()
+	
+	emit_signal("map_done")
 	
 func carve_path(pos1, pos2):
 	var x_diff = sign(pos2.x - pos1.x)
@@ -166,11 +159,15 @@ func carve_path(pos1, pos2):
 	var y_x = pos2
 	
 	for x in range(pos1.x, pos2.x, x_diff):
-		Map.set_cell(x, x_y.y, 1)
-		Map.set_cell(x, x_y.y + y_diff, 1)
+		Map.set_cell(x, x_y.y, CAVE_TILE)
+		Map.set_cell(x, x_y.y + y_diff, CAVE_TILE)
+		Map.update_bitmask_area(Vector2(x, x_y.y))
+		Map.update_bitmask_area(Vector2(x, x_y.y + y_diff))
 	for y in range(pos1.y, pos2.y, y_diff):
-		Map.set_cell(y_x.x, y, 1)	
-		Map.set_cell(y_x.x + x_diff, y, 1)
+		Map.set_cell(y_x.x, y, CAVE_TILE)	
+		Map.set_cell(y_x.x + x_diff, y, CAVE_TILE)
+		Map.update_bitmask_area(Vector2(y_x.x, y))
+		Map.update_bitmask_area(Vector2(y_x.x + x_diff, y))
 	
 func find_start_room():
 	var min_x = INF
@@ -203,3 +200,4 @@ func spawn_foliage(x_pos, y_pos):
 	var foliage_numbers = [4, 5]
 	var rand = rand_range(0, foliage_numbers.size())
 	FoliageMap.set_cell(x_pos, y_pos, foliage_numbers[rand])
+	
