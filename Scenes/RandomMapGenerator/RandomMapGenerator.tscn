@@ -11,6 +11,8 @@ num_rooms = 7
 
 [node name="Rooms" type="Node" parent="."]
 
+[node name="Rocks" type="Node" parent="."]
+
 [node name="Foliage" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
