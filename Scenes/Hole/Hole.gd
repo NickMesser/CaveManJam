@@ -1,21 +1,12 @@
 extends Node2D
 
+var next_scene = null
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
+	next_scene = get_tree().get_root().get_child(3).get("next_scene")
+	print(next_scene)
 
 func _on_Area2D_body_entered(body):
 	if body.name == "Player":
-		print("We hit a player!")
+		if next_scene:
+			TransitionMgr.transitionTo(next_scene)
