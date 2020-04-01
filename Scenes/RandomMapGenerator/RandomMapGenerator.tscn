@@ -12,10 +12,10 @@ num_rooms = 7
 [node name="Rooms" type="Node" parent="."]
 
 [node name="Foliage" type="TileMap" parent="."]
-z_index = 1
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+cell_y_sort = true
 format = 1
 
 [node name="LevelTiles" type="TileMap" parent="."]
@@ -26,3 +26,4 @@ cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 format = 1
 
 [node name="Cursor" parent="." instance=ExtResource( 3 )]
+z_index = 10
