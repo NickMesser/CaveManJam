@@ -5,7 +5,7 @@ var tilemap
 var player
 
 func _ready():
-	tilemap = get_tree().get_root().find_node("TileMap", true, false)
+	tilemap = get_tree().get_root().find_node("LevelTiles", true, false)
 	player = get_tree().get_root().find_node("Player", true, false)
 
 func _physics_process(delta):	

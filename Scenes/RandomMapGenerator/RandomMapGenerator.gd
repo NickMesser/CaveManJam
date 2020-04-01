@@ -2,11 +2,13 @@ extends Node2D
 
 signal map_done()
 
-onready var Map = $TileMap
+onready var Map = $LevelTiles
+onready var FoliageMap = $Foliage
 
 var Room = preload("res://Scenes/RandomMapGenerator/Room.tscn")
 var Player = preload("res://Scenes/Player/Player.tscn")
 var Rock = preload("res://Scenes/Rock/Rock.tscn")
+var Hole = preload("res://Scenes/Hole/Hole.tscn")
 
 var tile_size = 32
 export var num_rooms = 30
@@ -72,7 +74,7 @@ func make_rooms():
 	
 	var room_positions = []
 	for room in $Rooms.get_children():
-		if randf() < .3:
+		if randf() < .2:
 			room.queue_free()
 		else:
 			room.mode = RigidBody2D.MODE_STATIC
@@ -138,6 +140,10 @@ func make_map():
 						var x_pos = ul.x + x
 						var y_pos = ul.y + y
 						spawn_rock(x_pos, y_pos)
+					elif rand > .7:
+						var x_pos = ul.x + x
+						var y_pos = ul.y + y
+						spawn_foliage(x_pos, y_pos)
 		
 		var p = path.get_closest_point(room.position)
 		
@@ -180,8 +186,9 @@ func spawn_player():
 
 func spawn_hole():
 	var random_number = rand_range(0, spawned_rocks.size() + 1)
-	var new_hole = null
-	print(spawned_rocks[random_number].position)
+	var new_hole = Hole.instance()
+	add_child(new_hole)
+	new_hole.position = spawned_rocks[random_number].position
 
 func spawn_rock(x_pos, y_pos):
 	var rock = Rock.instance()
@@ -191,3 +198,8 @@ func spawn_rock(x_pos, y_pos):
 	current_tile.y += 16
 	rock.position = current_tile
 	spawned_rocks.append(rock)
+	
+func spawn_foliage(x_pos, y_pos):
+	var foliage_numbers = [4, 5]
+	var rand = rand_range(0, foliage_numbers.size())
+	FoliageMap.set_cell(x_pos, y_pos, foliage_numbers[rand])

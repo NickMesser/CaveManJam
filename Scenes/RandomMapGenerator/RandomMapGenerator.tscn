@@ -6,11 +6,18 @@
 
 [node name="RandomMapGenerator" type="Node2D"]
 script = ExtResource( 1 )
-num_rooms = 15
+num_rooms = 7
 
 [node name="Rooms" type="Node" parent="."]
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="Foliage" type="TileMap" parent="."]
+z_index = 1
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 32, 32 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+format = 1
+
+[node name="LevelTiles" type="TileMap" parent="."]
 show_behind_parent = true
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 32, 32 )
