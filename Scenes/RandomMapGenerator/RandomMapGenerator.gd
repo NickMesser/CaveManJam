@@ -2,6 +2,8 @@ extends Node2D
 
 signal map_done()
 
+const CAVE_TILE = 47
+
 onready var Map = $LevelTiles
 onready var FoliageMap = $Foliage
 
@@ -31,7 +33,7 @@ signal room_loaded
 func _ready():
 	randomize()
 	make_rooms()
-	
+
 func _process(delta):
 	update()
 
@@ -105,7 +107,7 @@ func find_mst(nodes):
 		path.add_point(n, min_position)
 		path.connect_points(path.get_closest_point(current_position), n)
 		nodes.erase(min_position)
-	emit_signal("map_done")
+	
 	return path
 	
 func make_map():
@@ -132,7 +134,7 @@ func make_map():
 		var ul = (room.position / tile_size).floor() - s
 		for x in range(2, s.x * 2 - 1):
 			for y in range(2, s.y * 2 - 1):
-				Map.set_cell(ul.x + x, ul.y + y, 1)
+				Map.set_cell(ul.x + x, ul.y + y, CAVE_TILE)
 				#Spawn rocks
 				var rand = randf()
 				if room.position != start_room.position:
@@ -155,6 +157,9 @@ func make_map():
 		hallways.append(p)
 	spawn_player()
 	spawn_hole()
+	#Autotile
+	update_bitmask()
+	emit_signal("map_done")
 	
 func carve_path(pos1, pos2):
 	var x_diff = sign(pos2.x - pos1.x)
@@ -166,11 +171,11 @@ func carve_path(pos1, pos2):
 	var y_x = pos2
 	
 	for x in range(pos1.x, pos2.x, x_diff):
-		Map.set_cell(x, x_y.y, 1)
-		Map.set_cell(x, x_y.y + y_diff, 1)
+		Map.set_cell(x, x_y.y, CAVE_TILE)
+		Map.set_cell(x, x_y.y + y_diff, CAVE_TILE)
 	for y in range(pos1.y, pos2.y, y_diff):
-		Map.set_cell(y_x.x, y, 1)	
-		Map.set_cell(y_x.x + x_diff, y, 1)
+		Map.set_cell(y_x.x, y, CAVE_TILE)	
+		Map.set_cell(y_x.x + x_diff, y, CAVE_TILE)
 	
 func find_start_room():
 	var min_x = INF
@@ -203,3 +208,9 @@ func spawn_foliage(x_pos, y_pos):
 	var foliage_numbers = [4, 5]
 	var rand = rand_range(0, foliage_numbers.size())
 	FoliageMap.set_cell(x_pos, y_pos, foliage_numbers[rand])
+	
+func update_bitmask():
+	var rect = Map.get_used_rect()
+	for i in range(rect.position.x, rect.end.x, 3):
+		for j in range(rect.position.y, rect.end.y, 3):
+			Map.update_bitmask_area(Vector2(i,j))

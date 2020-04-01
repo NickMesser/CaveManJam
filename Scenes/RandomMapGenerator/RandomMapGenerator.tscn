@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/RandomMapGenerator/RandomMapGenerator.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tiles/GroundTIle.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Cursor.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Autotile/cave/tileset_cave.tres" type="TileSet" id=4]
 
 [node name="RandomMapGenerator" type="Node2D"]
 script = ExtResource( 1 )
@@ -19,7 +20,7 @@ format = 1
 
 [node name="LevelTiles" type="TileMap" parent="."]
 show_behind_parent = true
-tile_set = ExtResource( 2 )
+tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 format = 1
