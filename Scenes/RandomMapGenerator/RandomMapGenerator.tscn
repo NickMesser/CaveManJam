@@ -1,13 +1,36 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/RandomMapGenerator/RandomMapGenerator.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Tiles/GroundTIle.tres" type="TileSet" id=2]
 [ext_resource path="res://Scenes/Cursor.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Autotile/cave/tileset_cave.tres" type="TileSet" id=4]
+[ext_resource path="res://Assets/Tiles/nav_tile.png" type="Texture" id=5]
+
+[sub_resource type="NavigationPolygon" id=1]
+vertices = PoolVector2Array( 32, 32, 0, 32, 0, 0, 32, 0 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+
+[sub_resource type="TileSet" id=2]
+0/name = "nav_tile.png 0"
+0/texture = ExtResource( 5 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 32, 32 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/navigation = SubResource( 1 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
 
 [node name="RandomMapGenerator" type="Node2D"]
 script = ExtResource( 1 )
 num_rooms = 7
+debug_mode = true
 
 [node name="Rooms" type="Node" parent="."]
 
@@ -29,3 +52,14 @@ format = 1
 
 [node name="Cursor" parent="." instance=ExtResource( 3 )]
 z_index = 10
+
+[node name="Dinos" type="Node" parent="."]
+
+[node name="nav" type="Navigation2D" parent="."]
+
+[node name="navmap" type="TileMap" parent="nav"]
+visible = false
+z_index = 5
+tile_set = SubResource( 2 )
+cell_size = Vector2( 32, 32 )
+format = 1
