@@ -82,7 +82,7 @@ func make_rooms():
 			room.mode = RigidBody2D.MODE_STATIC
 			room_positions.append(Vector2(room.position.x, room.position.y))
 	
-	yield(get_tree(), "idle_frame")
+	yield(get_tree().create_timer(.1), 'timeout')
 	path = find_mst(room_positions)
 	make_map()
 		
