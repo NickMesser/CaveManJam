@@ -22,6 +22,7 @@ func get_new_path():
 	move_destination = Globals.get("current_scene").get_random_point()
 	path = Globals.get("current_scene").get_nav(position, move_destination)
 	while(path.size() <= 2):
+		print(path)
 		move_destination = Globals.get("current_scene").get_random_point()
 		path = Globals.get("current_scene").get_nav(position, move_destination)
 	path_step = 0

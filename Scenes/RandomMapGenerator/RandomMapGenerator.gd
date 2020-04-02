@@ -128,7 +128,7 @@ func make_map():
 				var rand = randf()
 				if room.position != start_room.position:
 					#Spawn_Rocks
-					if rand > .9:
+					if rand > .9 and (x != 2 and x != s.x * 2 - 2) and (y != 2 and y != s.y * 2 -2):
 						var x_pos = ul.x + x
 						var y_pos = ul.y + y
 						#Navmap.set_cell(x_pos, y_pos, -1)
