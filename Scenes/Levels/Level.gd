@@ -22,3 +22,9 @@ func _on_RandomMapGenerator_map_done():
 func next_level():
 	$LoadingMap.show()
 	$RandomMapGenerator.clear_map()
+
+func get_nav(pointA, PointB):
+	return $RandomMapGenerator.get_nav(pointA, PointB)
+
+func get_random_point():
+	return $RandomMapGenerator.get_random_walkable_position()

@@ -1,7 +1,12 @@
 extends Node2D
 
+signal rock_smashed(pos)
+
 var smashed = false
 var HP = 3
+
+func _ready():
+	SignalMgr.register_publisher(self, "rock_smashed")
 
 func smash():
 	if HP > 0:
@@ -28,4 +33,5 @@ func play_anim(action):
 
 func _on_anim_animation_finished(anim_name):
 	if anim_name == "destroy":
+		emit_signal("rock_smashed", global_position)
 		queue_free()

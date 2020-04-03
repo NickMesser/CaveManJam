@@ -1,16 +1,11 @@
 extends "res://Scenes/StateMachine/baseState.gd"
 
-const IDLE_DOWN = 12
-const IDLE_UP = 44
-const IDLE_SIDE = 18
-
 func update(delta):
 	if Input.is_action_just_pressed("mouse_click"):
 		change_state("smashing")
 		return
 	# idle
 	if host.motion == Vector2.ZERO:
-		var frame = IDLE_DOWN
 		host.play_walk_sound(false)
 		if host.facing == "down":
 			host.play_anim("idle_down")
