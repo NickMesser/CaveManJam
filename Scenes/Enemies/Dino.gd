@@ -13,10 +13,15 @@ var path_step = 0
 
 func _ready():
 	path = Globals.get("current_scene").get_nav(position, move_destination)
-	$stateMachine.change_state("roaming")
 	#get move dest
 	#start roaming
 	pass
+
+func start():
+	$stateMachine.change_state("roaming")
+
+func stop():
+	$stateMachine.change_state("waiting")
 
 func get_new_path():
 	move_destination = Globals.get("current_scene").get_random_point()
