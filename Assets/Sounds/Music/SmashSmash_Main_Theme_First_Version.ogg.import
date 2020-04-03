@@ -11,5 +11,5 @@ dest_files=[ "res://.import/SmashSmash_Main_Theme_First_Version.ogg-f9f7ae0f4655
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
