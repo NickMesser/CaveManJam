@@ -24,6 +24,7 @@ config/icon="res://Assets/Textures/icon.png"
 Globals="*res://Autoloads/Globals.gd"
 SignalMgr="*res://Autoloads/SignalMgr.gd"
 TransitionMgr="*res://Autoloads/TransitionMgr/transitionMgr.tscn"
+BackgroundMusic="*res://Autoloads/BackgroundMusic/BackgroundMusic.tscn"
 
 [importer_defaults]
 
