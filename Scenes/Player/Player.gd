@@ -1,16 +1,22 @@
 extends KinematicBody2D
 
+
+
 export var player_speed = 2
 var flipped = false
 
 var motion = Vector2.ZERO
 var facing = "right"
 
+var cur_anim : String
+
 func _ready():
 	Globals.set("player", self)
 	
 func get_state():
 	return $stateMachine.current_state.name
+
+
 
 # Movement
 
@@ -55,6 +61,10 @@ func process_move_and_collide(delta):
 
 # Sound and Animation
 
+func anim_lock(anim_name : String):
+	cur_anim = anim_name
+	$stateMachine.change_state("animation")
+
 func play_walk_sound(playing : bool):
 	if playing:
 		if not $Footsteps.is_playing():
@@ -72,3 +82,6 @@ func stop_anim(frame : int):
 
 func anim_playing():
 	return $anim.is_playing()
+
+
+

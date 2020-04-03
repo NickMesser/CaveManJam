@@ -1,6 +1,8 @@
 extends Node2D
 
+
 var notification_scene = preload("res://Scenes/Notification/Notification.tscn")
+
 
 export(String, FILE, "*.tscn") var next_scene
 
@@ -18,8 +20,20 @@ func notify(pos : Vector2, text : String, color : Color = Color.white):
 
 func _on_RandomMapGenerator_map_done():
 	$LoadingMap.hide()
-	
+	var player = Globals.get("player")
+	player.anim_lock("spawn")
+	yield(player.get_node("anim"), "animation_finished")
+	for dino in $RandomMapGenerator.get_dinos():
+		dino.start()
+
 func next_level():
+	for dino in $RandomMapGenerator.get_dinos():
+		dino.stop()
+	var player = Globals.get("player")
+	player.anim_lock("down_hole")
+	yield(player.get_node("anim"), "animation_finished")
+	$RandomMapGenerator.difficulty += 2
+	# COULD PUT LOGIC HERE FOR BEATING GAME
 	$LoadingMap.show()
 	$RandomMapGenerator.clear_map()
 

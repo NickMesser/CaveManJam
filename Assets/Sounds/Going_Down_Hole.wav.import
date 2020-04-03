@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Going_Down_Hole.wav-60da6756801715d2407aa24e44acfd4b.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Going_Down_Hole.wav"
+dest_files=[ "res://.import/Going_Down_Hole.wav-60da6756801715d2407aa24e44acfd4b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

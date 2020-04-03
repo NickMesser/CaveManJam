@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/SmashSmash_Main_Theme_Loop_Version.ogg-a8a7082da128fb0a32203535ffbed3e4.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Music/SmashSmash_Main_Theme_Loop_Version.ogg"
+dest_files=[ "res://.import/SmashSmash_Main_Theme_Loop_Version.ogg-a8a7082da128fb0a32203535ffbed3e4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

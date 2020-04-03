@@ -275,4 +275,6 @@ func get_nav(pointA, pointB):
 		point = $nav/navmap.map_to_world(t_pos) + offset
 	#print(path)
 	return path
-	
+
+func get_dinos():
+	return $Dinos.get_children()
