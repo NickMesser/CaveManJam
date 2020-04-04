@@ -293,6 +293,7 @@ func place_items():
 		if not rock.has_item:
 			count += 1
 			var item = Globals.get("current_scene").get_random_item()
+			if not item: return
 			rock.set_item(item)
 			
 			

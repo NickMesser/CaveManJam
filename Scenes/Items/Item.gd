@@ -18,7 +18,7 @@ skull, leaf, fish, lightning
 var names = ["Fruit", "Bone", "Gem", "Pet Rock", "Lucky Fox", "Meat", "Smelly Mushroom", "Tasty Mushroom", "Orb", "Fire", "Beetle", "Shell", "Skull", "Pepper", "Fish", "Lightning"]
 
 
-var frame = 0
+export(int) var frame = 0
 
 func _ready():
 	SignalMgr.register_publisher(self, "notify")

@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Player/PlayerDummy.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Player/dummy.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Player/States/dummySmash.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Player/States/dummyRun.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/Player/States/dummyHole.gd" type="Script" id=6]
+
+[node name="PlayerDummy" instance=ExtResource( 2 )]
+scale = Vector2( 1, 1 )
+script = ExtResource( 1 )
+
+[node name="Sprite" parent="." index="1"]
+frame = 74
+
+[node name="Camera2D" parent="." index="2"]
+current = false
+
+[node name="dummyWalk" type="Node" parent="stateMachine" index="3"]
+script = ExtResource( 3 )
+
+[node name="dummySmash" type="Node" parent="stateMachine" index="4"]
+script = ExtResource( 4 )
+
+[node name="dummyRun" type="Node" parent="stateMachine" index="5"]
+script = ExtResource( 5 )
+
+[node name="dummyHole" type="Node" parent="stateMachine" index="6"]
+script = ExtResource( 6 )
