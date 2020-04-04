@@ -236,6 +236,8 @@ func clear_map():
 		dino.queue_free()
 	for rock in $Rocks.get_children():
 		rock.queue_free()
+	for item in $Items.get_children():
+		item.queue_free()
 		
 	path = null
 	$Hole.queue_free()

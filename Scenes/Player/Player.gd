@@ -83,5 +83,9 @@ func stop_anim(frame : int):
 func anim_playing():
 	return $anim.is_playing()
 
-
+func play_sound(sound):
+	var sound_player = $sounds.get_node(sound)
+	if not sound_player: return
+	if not sound_player.is_playing():
+		sound_player.play()
 

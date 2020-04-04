@@ -63,3 +63,5 @@ z_index = 5
 tile_set = SubResource( 2 )
 cell_size = Vector2( 32, 32 )
 format = 1
+
+[node name="Items" type="Node" parent="."]

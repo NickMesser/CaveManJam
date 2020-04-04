@@ -12,9 +12,17 @@ func _ready():
 	randomize()
 	init_items()
 	
-	
+
+func _input(event):
+	if event.is_action_released("pause"):
+		if get_tree().paused:
+			$UI/Collection.hide()
+			get_tree().paused = false
+		else:
+			get_tree().paused = true
+			$UI/Collection.show()
+
 func notify(pos : Vector2, text : String, color : Color = Color.white):
-	print(text)
 	var notification = notification_scene.instance()
 	notification.notify(pos, text)
 	notification.set_color(color)
@@ -35,7 +43,10 @@ func spawn_item(id, pos):
 	var new_item = item_scene.instance()
 	new_item.frame = id
 	new_item.global_position = pos
-	$RandomMapGenerator.add_child(new_item)
+	$RandomMapGenerator/Items.add_child(new_item)
+
+func pickup_item(id):
+	$UI/Collection.reveal_item(id)
 
 func _on_RandomMapGenerator_map_done():
 	#$RandomMapGenerator.place_items()

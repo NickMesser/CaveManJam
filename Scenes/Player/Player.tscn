@@ -32,7 +32,7 @@ tracks/0/keys = {
 "values": [ 74, 75, 76, 78, 79 ]
 }
 tracks/1/type = "method"
-tracks/1/path = NodePath("Footsteps/sounds/ouch")
+tracks/1/path = NodePath("sounds/ouch")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -46,7 +46,7 @@ tracks/1/keys = {
 } ]
 }
 tracks/2/type = "method"
-tracks/2/path = NodePath("Footsteps/sounds/death")
+tracks/2/path = NodePath("sounds/death")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -76,7 +76,7 @@ tracks/0/keys = {
 "values": [ 80, 81, 82, 83, 84, 85, 86, 87 ]
 }
 tracks/1/type = "method"
-tracks/1/path = NodePath("Footsteps/sounds/hole")
+tracks/1/path = NodePath("sounds/hole")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -278,22 +278,22 @@ script = ExtResource( 4 )
 [node name="animation" type="Node" parent="stateMachine"]
 script = ExtResource( 7 )
 
-[node name="Footsteps" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
+[node name="sounds" type="Node" parent="."]
 
-[node name="sounds" type="Node" parent="Footsteps"]
-
-[node name="ouch" type="AudioStreamPlayer" parent="Footsteps/sounds"]
+[node name="ouch" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource( 9 )
 
-[node name="death" type="AudioStreamPlayer" parent="Footsteps/sounds"]
+[node name="death" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource( 8 )
 
-[node name="item" type="AudioStreamPlayer" parent="Footsteps/sounds"]
+[node name="item" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource( 11 )
 
-[node name="hole" type="AudioStreamPlayer" parent="Footsteps/sounds"]
+[node name="hole" type="AudioStreamPlayer" parent="sounds"]
 stream = ExtResource( 10 )
+
+[node name="Footsteps" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
 anims/die = SubResource( 2 )
