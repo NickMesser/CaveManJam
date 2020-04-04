@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Textures/items.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Items/Item.gd" type="Script" id=2]
@@ -6,10 +6,29 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 14.0588
 
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -3 ), Vector2( 0, 0 ), Vector2( 0, 3 ), Vector2( 0, 0 ) ]
+}
+
 [node name="Item" type="Node2D"]
+position = Vector2( 0, 0.752468 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, 0.570633 )
 texture = ExtResource( 1 )
 vframes = 4
 hframes = 4
@@ -22,5 +41,9 @@ collision_mask = 16
 shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/idle = SubResource( 2 )
 [connection signal="body_entered" from="pickup" to="." method="_on_pickup_body_entered"]
 [connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]
