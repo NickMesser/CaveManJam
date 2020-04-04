@@ -2,23 +2,43 @@ extends Node2D
 
 
 var notification_scene = preload("res://Scenes/Notification/Notification.tscn")
+var item_scene = preload("res://Scenes/Items/Item.tscn")
 
-
-export(String, FILE, "*.tscn") var next_scene
+var items = []
 
 func _ready():
 	SignalMgr.register_subscriber(self, "notify", "notify")
 	Globals.set("current_scene", self)
+	randomize()
+	init_items()
 	
 	
 func notify(pos : Vector2, text : String, color : Color = Color.white):
+	print(text)
 	var notification = notification_scene.instance()
 	notification.notify(pos, text)
 	notification.set_color(color)
 	add_child(notification)
 
+# ITEMS #
+
+func init_items():
+	for i in range(16):
+		items.append(i)
+	items.shuffle()
+
+func get_random_item():
+	var item = items.pop_back()
+	return item
+
+func spawn_item(id, pos):
+	var new_item = item_scene.instance()
+	new_item.frame = id
+	new_item.global_position = pos
+	$RandomMapGenerator.add_child(new_item)
 
 func _on_RandomMapGenerator_map_done():
+	#$RandomMapGenerator.place_items()
 	$LoadingMap.hide()
 	var player = Globals.get("player")
 	player.anim_lock("spawn")
@@ -35,6 +55,8 @@ func next_level():
 	$RandomMapGenerator.difficulty += 2
 	# COULD PUT LOGIC HERE FOR BEATING GAME
 	$LoadingMap.show()
+	for item in $Items.get_children():
+		item.queue_free()
 	$RandomMapGenerator.clear_map()
 
 func get_nav(pointA, PointB):

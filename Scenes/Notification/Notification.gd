@@ -1,6 +1,6 @@
 extends Control
 
-var DURATION = 0.5
+var DURATION = 1.0
 var lifetime = 0.0
 
 func notify(_position : Vector2, _text :String):
