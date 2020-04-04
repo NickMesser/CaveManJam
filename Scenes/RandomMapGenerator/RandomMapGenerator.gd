@@ -23,6 +23,7 @@ var h_spread = 0
 var spawned_rocks = []
 
 var path
+var room_positions = []
 
 export var debug_mode = false
 
@@ -36,84 +37,25 @@ var difficulty = 3
 func _ready():
 	SignalMgr.register_subscriber(self, "rock_smashed", "_on_rock_smashed")
 	randomize()
-	make_rooms()
+	init_map()
 
-func _process(delta):
-	update()
-
-func _draw():
-	if debug_mode:
-		for room in $Rooms.get_children():
-			draw_rect(Rect2(room.position - room.size, room.size * 2), Color(32, 238,0), false)
-		
-		if path:
-			for p in path.get_points():
-				for c in path.get_point_connections(p):
-					var pp = path.get_point_position(p)
-					var cp = path.get_point_position(c)
-					draw_line(pp, cp, Color(1, 1, 0), 15, true)
-	
-func _input(event):
-	if debug_mode:
-		if event.is_action_pressed("ui_select"):
-			clear_map()
-		
-		if event.is_action_pressed("ui_focus_next"):
-			player = Player.instance()
-			add_child(player)
-			player.position = start_room.position
-	
-func make_rooms():
-	for i in range(num_rooms):
-		var pos = Vector2(rand_range(-h_spread, h_spread), 0)
-		var r = Room.instance()
-		var w = min_size + randi() % (max_size - min_size)
-		var h = min_size + randi() % (max_size - min_size)
-		r.make_room(pos, Vector2(w, h) * tile_size)
-		$Rooms.add_child(r)
-		
+func init_map():
+	create_rooms()
 	yield(get_tree().create_timer(1), 'timeout')
-	
-	var room_positions = []
-	for room in $Rooms.get_children():
-		if randf() < .2:
-			room.queue_free()
-		else:
-			room.mode = RigidBody2D.MODE_STATIC
-			room_positions.append(Vector2(room.position.x, room.position.y))
-	
-	yield(get_tree().create_timer(.1), 'timeout')
+	room_positions = cull_rooms()
+	yield(get_tree().create_timer(.5), 'timeout')
 	path = find_mst(room_positions)
-	make_map()
-		
-func find_mst(nodes):
-	var path = AStar2D.new()
-	path.add_point(path.get_available_point_id(), nodes.pop_front())
-	
-	while nodes:
-		var min_distance = INF
-		var min_position = null
-		var current_position = null
-		
-		for p1 in path.get_points():
-			p1 = path.get_point_position(p1)
-			for p2 in nodes:
-				if p1.distance_to(p2) < min_distance:
-					min_distance = p1.distance_to(p2)
-					min_position = p2
-					current_position = p1
-					
-		var n = path.get_available_point_id()
-		path.add_point(n, min_position)
-		path.connect_points(path.get_closest_point(current_position), n)
-		nodes.erase(min_position)
-	
-	return path
-	
-func make_map():
 	Map.clear()
 	find_start_room()
-		
+	carve_map()
+	remove_navs()
+	spawn_player()
+	spawn_hole()
+	spawn_dinos()
+	place_items()
+	emit_signal("map_done")
+
+func carve_map():
 	var hallways = []
 	#Set room tiles. 
 	for room in $Rooms.get_children():
@@ -138,7 +80,6 @@ func make_map():
 						var x_pos = ul.x + x
 						var y_pos = ul.y + y
 						spawn_foliage(x_pos, y_pos)
-		
 		#Set Hallways
 		var p = path.get_closest_point(room.position)
 		for connection in path.get_point_connections(p):
@@ -147,14 +88,117 @@ func make_map():
 				var end = Map.world_to_map(path.get_point_position(connection))
 				carve_path(start, end)	
 		hallways.append(p)
-	remove_navs()
-	spawn_player()
-	spawn_hole()
-	spawn_dinos()
-	place_items()
+
+func create_rooms():
+	# create all the rooms
+	for i in range(num_rooms):
+		var pos = Vector2(rand_range(-h_spread, h_spread), 0)
+		var r = Room.instance()
+		var w = min_size + randi() % (max_size - min_size)
+		var h = min_size + randi() % (max_size - min_size)
+		r.make_room(pos, Vector2(w, h) * tile_size)
+		$Rooms.add_child(r)
+
+func cull_rooms():
+	var positions = []
+	for room in $Rooms.get_children():
+		if randf() < .2:
+			room.queue_free()
+		else:
+			room.mode = RigidBody2D.MODE_STATIC
+			positions.append(Vector2(room.position.x, room.position.y))
+	return positions
+
+func find_mst(r_positions):
+	var a_path = AStar2D.new()
+	a_path.add_point(a_path.get_available_point_id(), r_positions.pop_front())
 	
-	emit_signal("map_done")
+	while r_positions:
+		var min_distance = INF
+		var min_position = null
+		var current_position = null
+		
+		for p1 in a_path.get_points():
+			p1 = a_path.get_point_position(p1)
+			for p2 in r_positions:
+				if p1.distance_to(p2) < min_distance:
+					min_distance = p1.distance_to(p2)
+					min_position = p2
+					current_position = p1
+					
+		var n = a_path.get_available_point_id()
+		a_path.add_point(n, min_position)
+		a_path.connect_points(a_path.get_closest_point(current_position), n)
+		r_positions.erase(min_position)
+	return a_path
 	
+
+
+
+# HELPERS
+
+func clear_map():
+	$Foliage.clear()
+	$LevelTiles.clear()
+	Navmap.clear()
+	spawned_rocks.clear()
+	for dino in $Dinos.get_children():
+		dino.queue_free()
+	for rock in $Rocks.get_children():
+		rock.queue_free()
+	for item in $Items.get_children():
+		item.queue_free()
+	path = null
+	$Hole.queue_free()
+	for room in $Rooms.get_children():
+		room.queue_free()
+
+func spawn_hole():
+	var random_number = rand_range(0, spawned_rocks.size())
+	var new_hole = Hole.instance()
+	add_child(new_hole)
+	new_hole.position = spawned_rocks[random_number].position
+	spawned_rocks[random_number].has_item = true
+
+func spawn_rock(x_pos, y_pos):
+	Navmap.set_cell(x_pos, y_pos, -1)
+	var rock = Rock.instance()
+	$Rocks.add_child(rock)
+	var current_tile = Map.map_to_world(Vector2(x_pos, y_pos))
+	current_tile.x += 16
+	current_tile.y += 16
+	rock.position = current_tile
+	spawned_rocks.append(rock)
+	
+func spawn_foliage(x_pos, y_pos):
+	var foliage_numbers = [4, 5]
+	var rand = rand_range(0, foliage_numbers.size())
+	FoliageMap.set_cell(x_pos, y_pos, foliage_numbers[rand])
+
+func spawn_dinos():
+	var rooms = $Rooms.get_children()
+	for i in range(difficulty):
+		var rand = randi() % rooms.size()
+		var room = rooms[rand]
+		var new_dino = Dino.instance()
+		var pos = room.position + (room.size / 2.0)
+		new_dino.set_position(pos)
+		new_dino.move_destination = new_dino.position
+		$Dinos.add_child(new_dino)
+
+func spawn_player():
+	if !player:
+		player = Player.instance()
+		add_child(player)
+	player.position = start_room.position
+
+func find_start_room():
+	var min_x = INF
+	for room in $Rooms.get_children():
+		if room.position.x < min_x:
+			start_room = room
+			min_x = room.position.x
+
 func carve_path(pos1, pos2):
 	var x_diff = sign(pos2.x - pos1.x)
 	var y_diff = sign(pos2.y - pos1.y)
@@ -178,74 +222,6 @@ func carve_path(pos1, pos2):
 		Map.update_bitmask_area(Vector2(y_x.x + x_diff, y))
 		Navmap.set_cell(y_x.x, y, 0)
 		Navmap.set_cell(y_x.x + x_diff, y, 0)
-	
-func find_start_room():
-	var min_x = INF
-	for room in $Rooms.get_children():
-		if room.position.x < min_x:
-			start_room = room
-			min_x = room.position.x
-
-func spawn_player():
-	if !player:
-		player = Player.instance()
-		add_child(player)
-		
-	player.position = start_room.position
-
-func spawn_hole():
-	var random_number = rand_range(0, spawned_rocks.size())
-	var new_hole = Hole.instance()
-	add_child(new_hole)
-	new_hole.position = spawned_rocks[random_number].position
-	spawned_rocks[random_number].has_item = true
-	
-func spawn_rock(x_pos, y_pos):
-	Navmap.set_cell(x_pos, y_pos, -1)
-	var rock = Rock.instance()
-	$Rocks.add_child(rock)
-	var current_tile = Map.map_to_world(Vector2(x_pos, y_pos))
-	current_tile.x += 16
-	current_tile.y += 16
-	rock.position = current_tile
-	spawned_rocks.append(rock)
-	
-	
-func spawn_foliage(x_pos, y_pos):
-	var foliage_numbers = [4, 5]
-	var rand = rand_range(0, foliage_numbers.size())
-	FoliageMap.set_cell(x_pos, y_pos, foliage_numbers[rand])
-
-func spawn_dinos():
-	var rooms = $Rooms.get_children()
-	for i in range(difficulty):
-		var rand = randi() % rooms.size()
-		var room = rooms[rand]
-		var new_dino = Dino.instance()
-		var pos = room.position + (room.size / 2.0)
-		new_dino.set_position(pos)
-		new_dino.move_destination = new_dino.position
-		$Dinos.add_child(new_dino)
-
-func clear_map():
-	$Foliage.clear()
-	$LevelTiles.clear()
-	Navmap.clear()
-	spawned_rocks.clear()
-	for dino in $Dinos.get_children():
-		dino.queue_free()
-	for rock in $Rocks.get_children():
-		rock.queue_free()
-	for item in $Items.get_children():
-		item.queue_free()
-		
-	path = null
-	$Hole.queue_free()
-	
-	for room in $Rooms.get_children():
-		room.queue_free()
-	
-	make_rooms()
 
 func _on_rock_smashed(pos : Vector2):
 	var tile_pos = Map.world_to_map(pos)
@@ -295,7 +271,3 @@ func place_items():
 			var item = Globals.get("current_scene").get_random_item()
 			if not item: return
 			rock.set_item(item)
-			
-			
-			
-			

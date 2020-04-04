@@ -32,10 +32,6 @@ func play_smash_anim():
 	else:
 		play_anim("destroy")
 
-#change this to the visual animation later
-func _on_Smash_finished():
-	queue_free()
-
 func play_anim(action):
 	if $anim.get_current_animation() != action:
 		$anim.play(action)
