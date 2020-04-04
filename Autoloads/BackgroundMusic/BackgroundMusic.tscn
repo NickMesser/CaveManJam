@@ -4,6 +4,7 @@
 [ext_resource path="res://Assets/Sounds/Music/Main_Menu_2_-_Audio.wav" type="AudioStream" id=2]
 
 [node name="BackgroundMusic" type="Node"]
+pause_mode = 2
 script = ExtResource( 1 )
 
 [node name="music" type="AudioStreamPlayer" parent="."]

@@ -29,7 +29,7 @@ func _on_pickup_body_entered(body):
 	Globals.get("player").play_sound("item")
 	var item_name = names[frame]
 	emit_signal("notify", global_position, item_name)
-	# update inventory
+	Globals.get("current_scene").pickup_item(frame)
 	$Tween.interpolate_property(self, "scale", scale, Vector2.ZERO, 0.5, Tween.TRANS_EXPO, Tween.EASE_IN)
 	$Tween.start()
 
