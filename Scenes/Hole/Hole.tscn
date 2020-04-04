@@ -20,4 +20,6 @@ region_rect = Rect2( 384, 256, 64, 64 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0.357235, 6.19201 )
 shape = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

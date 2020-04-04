@@ -66,8 +66,6 @@ func next_level():
 	$RandomMapGenerator.difficulty += 2
 	# COULD PUT LOGIC HERE FOR BEATING GAME
 	$LoadingMap.show()
-	for item in $Items.get_children():
-		item.queue_free()
 	$RandomMapGenerator.clear_map()
 
 func get_nav(pointA, PointB):
