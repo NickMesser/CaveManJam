@@ -6,10 +6,11 @@
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
-next_scene = "res://Scenes/Levels/Level.tscn"
 
 [node name="LoadingMap" parent="." instance=ExtResource( 3 )]
 
 [node name="RandomMapGenerator" parent="." instance=ExtResource( 2 )]
 debug_mode = false
+
+[node name="Items" type="YSort" parent="."]
 [connection signal="map_done" from="RandomMapGenerator" to="." method="_on_RandomMapGenerator_map_done"]

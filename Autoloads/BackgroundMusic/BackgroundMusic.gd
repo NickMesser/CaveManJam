@@ -27,11 +27,11 @@ func play_main_menu():
 	fade_in(0.5)
 
 func play_loop():
-	fade_out()
+	fade_out(2.0)
 	$music.stream = first_loop
 	$music.play()
 	looping = true
-	fade_in()
+	fade_in(2.0)
 
 func _on_music_finished():
 	if looping:

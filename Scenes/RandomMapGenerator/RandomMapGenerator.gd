@@ -151,6 +151,7 @@ func make_map():
 	spawn_player()
 	spawn_hole()
 	spawn_dinos()
+	place_items()
 	
 	emit_signal("map_done")
 	
@@ -197,6 +198,7 @@ func spawn_hole():
 	var new_hole = Hole.instance()
 	add_child(new_hole)
 	new_hole.position = spawned_rocks[random_number].position
+	spawned_rocks[random_number].has_item = true
 	
 func spawn_rock(x_pos, y_pos):
 	Navmap.set_cell(x_pos, y_pos, -1)
@@ -230,6 +232,8 @@ func clear_map():
 	$LevelTiles.clear()
 	Navmap.clear()
 	spawned_rocks.clear()
+	for dino in $Dinos.get_children():
+		dino.queue_free()
 	for rock in $Rocks.get_children():
 		rock.queue_free()
 		
@@ -278,3 +282,17 @@ func get_nav(pointA, pointB):
 
 func get_dinos():
 	return $Dinos.get_children()
+
+func place_items():
+	var count = 0
+	while count < 4:
+		var rand = randi() % spawned_rocks.size()
+		var rock = spawned_rocks[rand]
+		if not rock.has_item:
+			count += 1
+			var item = Globals.get("current_scene").get_random_item()
+			rock.set_item(item)
+			
+			
+			
+			
