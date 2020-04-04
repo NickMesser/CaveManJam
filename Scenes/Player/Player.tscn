@@ -265,14 +265,15 @@ collision_layer = 17
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 6 )
+position = Vector2( 0, -12 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -18 )
 texture = ExtResource( 2 )
 vframes = 5
 hframes = 18
-frame = 54
+frame = 73
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
