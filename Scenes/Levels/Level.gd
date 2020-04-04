@@ -67,6 +67,7 @@ func next_level():
 	# COULD PUT LOGIC HERE FOR BEATING GAME
 	$LoadingMap.show()
 	$RandomMapGenerator.clear_map()
+	$RandomMapGenerator.init_map()
 
 func get_nav(pointA, PointB):
 	return $RandomMapGenerator.get_nav(pointA, PointB)
