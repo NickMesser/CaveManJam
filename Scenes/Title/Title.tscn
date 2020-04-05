@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Title/Title.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Textures/title_cave_sketch.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Textures/title_bg.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Textures/how_to_button.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Textures/start_button.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Textures/title.png" type="Texture" id=5]
 
 [node name="Title" type="Control"]
 anchor_right = 1.0
@@ -26,26 +29,34 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.5
-margin_top = 86.0
-margin_right = 20.5
-margin_bottom = 130.0
+margin_left = 194.0
+margin_top = 47.0
+margin_right = 322.0
+margin_bottom = 227.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Start" type="Button" parent="buttons"]
-margin_right = 89.0
-margin_bottom = 20.0
-text = "Start"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Start" type="TextureButton" parent="buttons"]
+margin_right = 128.0
+margin_bottom = 88.0
+texture_normal = ExtResource( 4 )
 
-[node name="HowToPlay" type="Button" parent="buttons"]
-margin_top = 24.0
-margin_right = 89.0
-margin_bottom = 44.0
-text = "How To Play"
+[node name="HowToPlay" type="TextureButton" parent="buttons"]
+margin_top = 92.0
+margin_right = 128.0
+margin_bottom = 180.0
+texture_normal = ExtResource( 3 )
+
+[node name="title" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -434.0
+margin_top = -266.0
+margin_right = 46.0
+margin_bottom = 134.0
+texture = ExtResource( 5 )
 [connection signal="button_up" from="buttons/Start" to="." method="_on_Start_button_up"]
 [connection signal="button_up" from="buttons/HowToPlay" to="." method="_on_HowToPlay_button_up"]
