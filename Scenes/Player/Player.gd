@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-
+var TITLE = "res://Scenes/Title/Intro.tscn"
 
 export var player_speed = 2
 var flipped = false
@@ -89,3 +89,9 @@ func play_sound(sound):
 	if not sound_player.is_playing():
 		sound_player.play()
 
+
+
+func _on_anim_animation_finished(anim_name):
+	if anim_name == "die":
+		visible = false
+		TransitionMgr.transitionTo(TITLE)
