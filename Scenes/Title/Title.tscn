@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Title/Title.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Textures/title_bg.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Textures/how_to_button.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Textures/start_button.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Textures/title.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Fonts/MenuMedium.tres" type="DynamicFont" id=6]
 
 [node name="Title" type="Control"]
 anchor_right = 1.0
@@ -58,5 +59,52 @@ margin_top = -266.0
 margin_right = 46.0
 margin_bottom = 134.0
 texture = ExtResource( 5 )
+
+[node name="Credits" type="VBoxContainer" parent="."]
+margin_left = 638.0
+margin_top = 91.0
+margin_right = 923.0
+margin_bottom = 280.0
+custom_constants/separation = 8
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Credits"]
+margin_top = 22.0
+margin_right = 330.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 6 )
+text = "George Meisinger"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="Credits"]
+margin_top = 60.0
+margin_right = 330.0
+margin_bottom = 90.0
+custom_fonts/font = ExtResource( 6 )
+text = "Lindsy Kitsis"
+align = 1
+valign = 1
+
+[node name="Label3" type="Label" parent="Credits"]
+margin_top = 98.0
+margin_right = 330.0
+margin_bottom = 128.0
+custom_fonts/font = ExtResource( 6 )
+text = "Jonas Elliot Bedsted"
+align = 1
+valign = 1
+
+[node name="Label4" type="Label" parent="Credits"]
+margin_top = 136.0
+margin_right = 330.0
+margin_bottom = 166.0
+custom_fonts/font = ExtResource( 6 )
+text = "Nick Messer"
+align = 1
+valign = 1
 [connection signal="button_up" from="buttons/Start" to="." method="_on_Start_button_up"]
 [connection signal="button_up" from="buttons/HowToPlay" to="." method="_on_HowToPlay_button_up"]

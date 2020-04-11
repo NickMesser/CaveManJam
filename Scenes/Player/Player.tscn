@@ -321,3 +321,4 @@ anims/spawn = SubResource( 10 )
 anims/walk_down = SubResource( 11 )
 anims/walk_side = SubResource( 12 )
 anims/walk_up = SubResource( 13 )
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

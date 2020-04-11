@@ -1,15 +1,17 @@
 extends Node2D
 
-
+var YOU_WIN = "res://Scenes/Levels/YouWin.tscn"
 var notification_scene = preload("res://Scenes/Notification/Notification.tscn")
 var item_scene = preload("res://Scenes/Items/Item.tscn")
 
 var items = []
+var level = 1
 
 func _ready():
 	SignalMgr.register_subscriber(self, "notify", "notify")
 	Globals.set("current_scene", self)
 	randomize()
+	level = 1
 	init_items()
 	
 
@@ -63,8 +65,11 @@ func next_level():
 	var player = Globals.get("player")
 	player.anim_lock("down_hole")
 	yield(player.get_node("anim"), "animation_finished")
-	$RandomMapGenerator.difficulty += 2
+	$RandomMapGenerator.difficulty += 1
 	# COULD PUT LOGIC HERE FOR BEATING GAME
+	level += 1
+	if level == 5:
+		TransitionMgr.transitionTo(YOU_WIN)
 	$LoadingMap.show()
 	$RandomMapGenerator.clear_map()
 	$RandomMapGenerator.init_map()
